@@ -1,0 +1,43 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background-color: #000000;
+  font-family: 'VT323', monospace;
+  color: #19ff00;
+}
+
+#parent-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+#symbol-choice h2:hover {
+  border: 1px solid white;
+  cursor: default;
+}
+#symbol-choice h2 {
+  display: inline;
+  padding: 10px;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+   opacity: 1;
+}
+
+#board {
+  visibility: hidden;
+}
+
+.rows {
+}
+
+.squares {
+  border: 1px solid #19ff00;
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+}
