@@ -14,25 +14,26 @@ html, body {
   height: 100%;
 }
 
-#symbol-choice h2:hover {
+#symbol-container h2:hover {
   border: 1px solid white;
   cursor: default;
 }
-#symbol-choice h2 {
+#symbol-container h2 {
   display: inline;
   padding: 10px;
   -webkit-transition: opacity 1s ease-in-out;
   -moz-transition: opacity 1s ease-in-out;
   -ms-transition: opacity 1s ease-in-out;
   -o-transition: opacity 1s ease-in-out;
-   opacity: 1;
+  opacity: 1;
 }
 
-#board {
-  visibility: hidden;
-}
-
-.rows {
+#board, #instructions {
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  opacity: 0;
 }
 
 .squares {
