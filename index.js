@@ -1,5 +1,7 @@
 // player can make a mark on the board corresponding to their symbol
 // game ends when there are three of same mark in a row or all squares filled
+// check board after every move is made
+
 var game;
 var player;
 
@@ -33,6 +35,7 @@ class Board {
       this.board.filter(square => { return square.className.slice(-1) === '1' }),
       this.board.filter(square => { return square.className.slice(-1) === '2' })
     ]
+
     // 2D array of the board diagonals
     this.diagonals = [
       [this.board[0],this.board[4],this.board[8]],
@@ -48,7 +51,43 @@ class Board {
       });
     });
   }
+
+  // checks if game has ended (win, lose, or tie)
+  over() {
+    var gameOver = false;
+    var winConditions = [this.rows, this.columns, this.diagonals];
+    winConditions.forEach(condition => {
+      if (this.checkWinConditions(condition)) { gameOver = true }
+    })
+    return gameOver;
+  }
+
+  // returns true if there is a win condition
+  checkWinConditions(condition) {
+    var isWin = false;
+    condition.forEach(arr => {
+      if (this.allSameElements(arr)) { isWin = true }
+    });
+    return isWin;
+  }
+
+  // helper function to check that all elements in an array have same value
+  allSameElements(array) {
+    var firstElement = array[0].innerText;
+    if (firstElement === '') { return false }
+
+    return array.every(element => {
+      return element.innerText === firstElement;
+    });
+  }
+
 }
+
+// receives an instance of Board class
+var score = (game) => {
+
+}
+
 
 
 var chooseSymbol = () => {
