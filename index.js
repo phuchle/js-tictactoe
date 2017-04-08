@@ -11,7 +11,7 @@ class Player {
   }
 }
 
-class Board {
+class TicTacToeBoard {
   constructor() {
     this.board = []; // 1D array of squares div
 
@@ -42,6 +42,7 @@ class Board {
       [this.board[2],this.board[4],this.board[6]]
     ]
 
+    this.winConditions = [this.rows, this.columns, this.diagonals];
   }
 
   addListeners() {
@@ -55,40 +56,68 @@ class Board {
   // checks if game has ended (win, lose, or tie)
   over() {
     var gameOver = false;
-    var winConditions = [this.rows, this.columns, this.diagonals];
-    winConditions.forEach(condition => {
-      if (this.checkWinConditions(condition)) { gameOver = true }
-    })
+
+    this.winConditions.forEach(condition => {
+      if (this.winConditionPresent(condition)) gameOver = true;
+    });
+
+    var boardFull = this.board.every(square => {
+      return square.innerText !== '';
+    });
+
+    if (boardFull) gameOver = true;
+
     return gameOver;
   }
 
-  // returns true if there is a win condition
-  checkWinConditions(condition) {
+  // helper that checks an array of  returns true if there is a win condition
+  winConditionPresent(condition) {
     var isWin = false;
     condition.forEach(arr => {
-      if (this.allSameElements(arr)) { isWin = true }
+      if (this.allSameElements(arr)) isWin = true;
     });
     return isWin;
   }
 
-  // helper function to check that all elements in an array have same value
+  // helper to check that all elements in an array have same value
   allSameElements(array) {
     var firstElement = array[0].innerText;
-    if (firstElement === '') { return false }
+    if (firstElement === '') return false;
 
     return array.every(element => {
       return element.innerText === firstElement;
     });
   }
 
+  // checks if the passed player is the winner
+  isWinner(player) {
+    var winningMark;
+    if (this.over()) {
+      this.winConditions.forEach(condition => {
+        condition.forEach(arr => {
+          if (this.allSameElements(arr)) winningMark = arr[0].innerText;
+        });
+      });
+    }
+    return winningMark === player.symbol;
+  }
 }
 
 // receives an instance of Board class
-var score = (game) => {
+// var score = (game, depth) => {
+//   if //player 1 wins {
+//     return 10 - depth;
+//   } else if  { //player 2 wins
+//     return depth - 10;
+//   }
+//   else {
+//     return 0;
+//   }
+// }
+
+var minimax = (game, depth) => {
 
 }
-
-
 
 var chooseSymbol = () => {
   var symbolContainer = document.getElementById('symbol-container');
@@ -119,6 +148,6 @@ var showInstructions = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   player = new Player();
-  game = new Board();
+  game = new TicTacToeBoard();
   chooseSymbol();
 });
