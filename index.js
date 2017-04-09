@@ -4,6 +4,7 @@
 
 var game;
 var player;
+var ai;
 
 class Player {
   move(square) {
@@ -116,7 +117,8 @@ class TicTacToeBoard {
 // }
 
 var minimax = (game, depth) => {
-
+  var moves = [];
+  var scores = [];
 }
 
 var chooseSymbol = () => {
@@ -129,6 +131,8 @@ var chooseSymbol = () => {
     symbol.addEventListener('click', () => {
       symbolContainer.style.opacity = 0;
       player.symbol = symbol.innerText;
+      ai = new Player();
+      player.symbol === 'X' ? ai.symbol = 'O' : ai.symbol = 'X';
       game.addListeners();
       showBoard();
       showInstructions();
