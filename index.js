@@ -7,15 +7,25 @@ var player;
 var ai;
 
 class Player {
+  passTurn() {
+    if (game.activePlayer === player) {
+      game.activePlayer = ai;
+    } else {
+      game.activePlayer = player;
+    }
+  }
+
   move(square) {
     square.innerHTML = this.symbol;
+    passTurn();
   }
 }
 
 class TicTacToeBoard {
   constructor() {
     this.board = []; // 1D array of squares div
-    this.currentPlayer = player;
+    this.activePlayer = player;
+
     // Add each square to this.board to gain access to Array methods
     Array.prototype.forEach
       .call(document.getElementsByClassName('squares'), item => {
@@ -116,10 +126,10 @@ class TicTacToeBoard {
     return possibleMoves;
   }
 
-  getnewState(move) {
+  getnewState(square) {
     var newBoard = [...this.board];
-    newBoard[newBoard.indexOf(move)].innerText = this.currentPlayer.symbol;
-
+    var newMove = newBoard[newBoard.indexOf(square)];
+    this.activePlayer.move(newMove);
     return newBoard;
   }
 }
@@ -158,6 +168,13 @@ var minimax = (game, depth) => {
   //if it's the AI's turn
     // find indeex of min score
     // return move at index of min score
+  if (game.activePlayer === ai) {
+    var maxIndex = scores.indexOf(Math.max(scores));
+    return moves[maxIndex];
+  } else {
+    var minIndex = scores.indexOf(Math.min(scores));
+    return moves[minIndex];
+  }
 }
 
 var chooseSymbol = () => {
