@@ -15,7 +15,7 @@ class Player {
 class TicTacToeBoard {
   constructor() {
     this.board = []; // 1D array of squares div
-
+    this.currentPlayer = player;
     // Add each square to this.board to gain access to Array methods
     Array.prototype.forEach
       .call(document.getElementsByClassName('squares'), item => {
@@ -102,23 +102,62 @@ class TicTacToeBoard {
     }
     return winningMark === player.symbol;
   }
+
+  // reurn array of divs
+  getPossibleMoves() {
+    var possibleMoves = [];
+
+    this.board.forEach(square => {
+      if (square.innerText === '') {
+        possibleMoves.push(square);
+      }
+    });
+
+    return possibleMoves;
+  }
+
+  getnewState(move) {
+    var newBoard = [...this.board];
+    newBoard[newBoard.indexOf(move)].innerText = this.currentPlayer.symbol;
+
+    return newBoard;
+  }
 }
 
 // receives an instance of Board class
-// var score = (game, depth) => {
-//   if //player 1 wins {
-//     return 10 - depth;
-//   } else if  { //player 2 wins
-//     return depth - 10;
-//   }
-//   else {
-//     return 0;
-//   }
-// }
+var score = (game, depth) => {
+  if (game.isWinner(ai)) {
+    return 10 - depth;
+  } else if (game.isWinner(player)) {
+    return depth - 10;
+  }
+  else {
+    return 0;
+  }
+}
 
 var minimax = (game, depth) => {
+  if (game.over()) return score(game, depth);
+  depth++;
   var moves = [];
   var scores = [];
+
+  game.getPossibleMoves().forEach(move => {
+    // create a new possible game state for the move
+    // run minimax on this new game state
+    // eventually returns a score, push score to scores
+    // push move to moves
+    possibleGame = game.getNewState(move);
+    scores.push(minimax(possibleGame, depth));
+    moves.push(move);
+  });
+
+  // if it's player's turn
+    // find index of max score
+    // return move at same index as max score
+  //if it's the AI's turn
+    // find indeex of min score
+    // return move at index of min score
 }
 
 var chooseSymbol = () => {
