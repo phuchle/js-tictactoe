@@ -103,18 +103,19 @@ class TicTacToeBoard {
     return possibleMoves;
   }
 
+  // return a new instance of TicTacToeBoard with the new move made
   getNewState(square) {
-    var newState = new TicTacToeBoard();
+    var newState = new TicTacToeBoard(this.activePlayer);
     var newBoard = [...this.board];
-    var newMoveIndex = newBoard[newBoard.indexOf(square)];
-
-    newBoard[newMoveIndex].innerText = this.activePlayer.symbol;
+    debugger;
+    // target the square of the new board
+    var newSquare = newBoard[newBoard.indexOf(square)];
+    //make the move in the new square
+    newSquare.innerText = this.activePlayer.symbol;
     newState.board = newBoard;
-
-    newState.board[newMoveIndex].innerHTML = this.activePlayer.symbol;
     newState.simulatePassTurn();
 
-    return newBoard;
+    return newState;
   }
 
   // helper function so ai.move() isn't called many times

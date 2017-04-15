@@ -25,21 +25,21 @@ class AI extends Player {
     this.passTurn();
   }
 
-  minimax(game, depth) {
+  minimax(newGame, depth) {
     debugger;
-    if (game.over()) {
-      return this.score(game, depth);
+    if (newGame.over()) {
+      return this.score(newGame, depth);
     } else {
       depth++;
       var moves = [];
       var scores = [];
 
-      game.getPossibleMoves().forEach(move => {
+      newGame.getPossibleMoves().forEach(move => {
         // create a new possible game state for the move
         // run minimax on this new game state
         // eventually returns a score, push score to scores
         // push move to moves
-        var possibleGame = game.getNewState(move);
+        var possibleGame = newGame.getNewState(move);
         scores.push(this.minimax(possibleGame, depth));
         moves.push(move);
       });
@@ -50,7 +50,7 @@ class AI extends Player {
       //if it's the AI's turn
       // find indeex of min score
       // return move at index of min score
-      if (game.activePlayer === ai) {
+      if (newGame.activePlayer === ai) {
         var maxIndex = scores.indexOf(Math.max(scores));
         return moves[maxIndex];
       } else {

@@ -6,6 +6,7 @@ var game;
 var player;
 var ai;
 
+// assigns x and o based on what human chooses to be
 var chooseSymbol = () => {
   var symbolContainer = document.getElementById('symbol-container');
   var x = document.getElementById('X');
