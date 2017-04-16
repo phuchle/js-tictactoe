@@ -1,44 +1,60 @@
 class TicTacToeBoard {
   constructor(activePlayer = player) {
-    this.board = []; // 1D array of squares div
+    this.modelBoard = {}; // coords as keys, strings as values
+    this.visibleBoard = []; // array of divs
     this.activePlayer = activePlayer;
 
-    // Add each square to this.board to gain access to Array methods
+    // Add each square's innerText to this.modelBoard to gain access to Array methods
     Array.prototype.forEach
       .call(document.getElementsByClassName('squares'), item => {
-        this.board.push(item);
+        this.modelBoard[item.id] = item.innerText;
+        this.visibleBoard.push(item);
       }
     );
 
     // 2D array of board rows
     this.rows = [
-      this.board.slice(0, 3),
-      this.board.slice(3, 6),
-      this.board.slice(6)
+      [this.modelBoard['00'], this.modelBoard['01'], this.modelBoard['02']],
+      [this.modelBoard['11'], this.modelBoard['11'], this.modelBoard['12']],
+      [this.modelBoard['20'], this.modelBoard['21'], this.modelBoard['22']]
     ]
 
     // 2D array of the board columns
     this.columns = [
-      this.board.filter(square => { return square.className.slice(-1) === '0' }),
-      this.board.filter(square => { return square.className.slice(-1) === '1' }),
-      this.board.filter(square => { return square.className.slice(-1) === '2' })
+      [this.rows[0][0], this.rows[1][0], this.rows[2][0]],
+      [this.rows[0][1], this.rows[1][1], this.rows[2][1]],
+      [this.rows[0][2], this.rows[1][2], this.rows[2][2]]
     ]
 
     // 2D array of the board diagonals
     this.diagonals = [
-      [this.board[0],this.board[4],this.board[8]],
-      [this.board[2],this.board[4],this.board[6]]
+      [this.modelBoard['00'],this.modelBoard['11'],this.modelBoard['22']],
+      [this.modelBoard['02'],this.modelBoard['11'],this.modelBoard['20']]
     ]
 
     this.winConditions = [this.rows, this.columns, this.diagonals];
   }
 
   addListeners() {
-    this.board.forEach(square => {
+    // create a new function bound to TicTacToeBoard as 'this'
+    var bindCopy = this.copyToModelBoard.bind(this);
+
+    this.visibleBoard.forEach(square => {
       square.addEventListener('click', () => {
+        debugger;
         player.move(square);
+        bindCopy(square);
+        ai.move();
       });
     });
+  }
+
+  // helper for addListeners
+  copyToModelBoard(square) {
+    debugger;
+    var targetID = square.id;
+
+    this.modelBoard[targetID] = square.innerText;
   }
 
   // checks if game has ended (win, lose, or tie)
@@ -49,8 +65,8 @@ class TicTacToeBoard {
       if (this.winConditionPresent(condition)) gameOver = true;
     });
 
-    var boardFull = this.board.every(square => {
-      return square.innerText !== '';
+    var boardFull = Object.values(this.modelBoard).every(square => {
+      return square !== '';
     });
 
     if (boardFull) gameOver = true;
@@ -67,55 +83,64 @@ class TicTacToeBoard {
     return isWin;
   }
 
-  // helper to check that all elements in an array have same value
-  allSameElements(array) {
-    var firstElement = array[0].innerText;
-    if (firstElement === '') return false;
-
-    return array.every(element => {
-      return element.innerText === firstElement;
-    });
-  }
-
   // checks if the passed player is the winner
-  isWinner(player) {
+  isWinner(currentPlayer) {
     var winningMark;
     if (this.over()) {
       this.winConditions.forEach(condition => {
         condition.forEach(arr => {
-          if (this.allSameElements(arr)) winningMark = arr[0].innerText;
+          if (this.allSameElements(arr)) winningMark = arr[0];
         });
       });
     }
-    return winningMark === player.symbol;
+    return winningMark === currentPlayer.symbol;
   }
 
-  // reurn array of divs
-  getPossibleMoves() {
-    var possibleMoves = [];
+  allSameElements(array) {
+    var firstElement = array[0];
+    if (firstElement === '') return false;
 
-    this.board.forEach(square => {
-      if (square.innerText === '') {
-        possibleMoves.push(square);
+    return array.every(element => {
+      return element === firstElement;
+    });
+  }
+
+  // returns an object with div id as keys and innerText as values
+  getPossibleMoves() {
+    var possibleMoves = {};
+
+    Object.keys(this.modelBoard).forEach(square => {
+      if (this.modelBoard[square] === '') {
+        possibleMoves[square] = this.modelBoard[square];
       }
     });
 
     return possibleMoves;
   }
 
+  // accepts a div
   // return a new instance of TicTacToeBoard with the new move made
-  getNewState(square) {
+  getNewState(squareID, squareText) {
     var newState = new TicTacToeBoard(this.activePlayer);
-    var newBoard = [...this.board];
+    var newBoard = this.cloneBoard(this.modelBoard);
     debugger;
-    // target the square of the new board
-    var newSquare = newBoard[newBoard.indexOf(square)];
     //make the move in the new square
-    newSquare.innerText = this.activePlayer.symbol;
+    newBoard[squareID] = this.activePlayer.symbol;
     newState.board = newBoard;
     newState.simulatePassTurn();
 
     return newState;
+  }
+
+  // returns an object
+  cloneBoard() {
+    var copy = {};
+
+    for (var prop in this.modelBoard) {
+      copy[prop] = board[prop];
+    }
+
+    return copy;
   }
 
   // helper function so ai.move() isn't called many times

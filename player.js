@@ -9,7 +9,6 @@ class Player {
   passTurn() {
     if (game.activePlayer === player) {
       game.activePlayer = ai;
-      ai.move();
     } else {
       game.activePlayer = player;
     }
@@ -25,21 +24,28 @@ class AI extends Player {
     this.passTurn();
   }
 
-  minimax(newGame, depth) {
-    debugger;
-    if (newGame.over()) {
-      return this.score(newGame, depth);
+  // creates a set of possible moves, analyzes for the best move
+  // returns a move
+  minimax(testGame, depth) {
+    if (testGame.over()) {
+      debugger;
+      return this.score(testGame, depth);
     } else {
       depth++;
       var moves = [];
       var scores = [];
 
-      newGame.getPossibleMoves().forEach(move => {
+      // possibleMoves is an object with div ID: innerText as key: value
+      var possibleMoves = testGame.getPossibleMoves();
+      debugger;
+      Object.keys(possibleMoves).forEach(coord => {
+        debugger;
         // create a new possible game state for the move
         // run minimax on this new game state
         // eventually returns a score, push score to scores
         // push move to moves
-        var possibleGame = newGame.getNewState(move);
+        var possibleGame = testGame.getNewState(coord, possibleMoves[coord]);
+
         scores.push(this.minimax(possibleGame, depth));
         moves.push(move);
       });
@@ -50,7 +56,7 @@ class AI extends Player {
       //if it's the AI's turn
       // find indeex of min score
       // return move at index of min score
-      if (newGame.activePlayer === ai) {
+      if (testGame.activePlayer === ai) {
         var maxIndex = scores.indexOf(Math.max(scores));
         return moves[maxIndex];
       } else {
@@ -61,10 +67,10 @@ class AI extends Player {
   }
 
   // receives an instance of Board class
-  score(game, depth) {
-    if (game.isWinner(ai)) {
+  score(testGame, depth) {
+    if (testGame.isWinner(ai)) {
       return 10 - depth;
-    } else if (game.isWinner(player)) {
+    } else if (testGame.isWinner(player)) {
       return depth - 10;
     }
     else {
