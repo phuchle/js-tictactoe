@@ -11,28 +11,6 @@ class TicTacToeBoard {
         this.visibleBoard.push(item);
       }
     );
-
-    // 2D array of board rows
-    this.rows = [
-      [this.modelBoard['00'], this.modelBoard['01'], this.modelBoard['02']],
-      [this.modelBoard['11'], this.modelBoard['11'], this.modelBoard['12']],
-      [this.modelBoard['20'], this.modelBoard['21'], this.modelBoard['22']]
-    ]
-
-    // 2D array of the board columns
-    this.columns = [
-      [this.rows[0][0], this.rows[1][0], this.rows[2][0]],
-      [this.rows[0][1], this.rows[1][1], this.rows[2][1]],
-      [this.rows[0][2], this.rows[1][2], this.rows[2][2]]
-    ]
-
-    // 2D array of the board diagonals
-    this.diagonals = [
-      [this.modelBoard['00'],this.modelBoard['11'],this.modelBoard['22']],
-      [this.modelBoard['02'],this.modelBoard['11'],this.modelBoard['20']]
-    ]
-
-    this.winConditions = [this.rows, this.columns, this.diagonals];
   }
 
   addListeners() {
@@ -41,7 +19,6 @@ class TicTacToeBoard {
 
     this.visibleBoard.forEach(square => {
       square.addEventListener('click', () => {
-        debugger;
         player.move(square);
         bindCopy(square);
         ai.move();
@@ -51,7 +28,6 @@ class TicTacToeBoard {
 
   // helper for addListeners
   copyToModelBoard(square) {
-    debugger;
     var targetID = square.id;
 
     this.modelBoard[targetID] = square.innerText;
@@ -60,8 +36,9 @@ class TicTacToeBoard {
   // checks if game has ended (win, lose, or tie)
   over() {
     var gameOver = false;
+    var winConditions = this.getWinConditions();
 
-    this.winConditions.forEach(condition => {
+    winConditions.forEach(condition => {
       if (this.winConditionPresent(condition)) gameOver = true;
     });
 
@@ -86,8 +63,10 @@ class TicTacToeBoard {
   // checks if the passed player is the winner
   isWinner(currentPlayer) {
     var winningMark;
+    var winConditions = this.getWinConditions();
     if (this.over()) {
-      this.winConditions.forEach(condition => {
+      debugger;
+      winConditions.forEach(condition => {
         condition.forEach(arr => {
           if (this.allSameElements(arr)) winningMark = arr[0];
         });
@@ -105,6 +84,31 @@ class TicTacToeBoard {
     });
   }
 
+  // returns a 2D array
+  getWinConditions() {
+    // 2D array of board rows
+    var rows = [
+      [this.modelBoard['00'], this.modelBoard['01'], this.modelBoard['02']],
+      [this.modelBoard['11'], this.modelBoard['11'], this.modelBoard['12']],
+      [this.modelBoard['20'], this.modelBoard['21'], this.modelBoard['22']]
+    ]
+
+    // 2D array of the board columns
+    var columns = [
+      [this.rows[0][0], this.rows[1][0], this.rows[2][0]],
+      [this.rows[0][1], this.rows[1][1], this.rows[2][1]],
+      [this.rows[0][2], this.rows[1][2], this.rows[2][2]]
+    ]
+
+    // 2D array of the board diagonals
+    var diagonals = [
+      [this.modelBoard['00'],this.modelBoard['11'],this.modelBoard['22']],
+      [this.modelBoard['02'],this.modelBoard['11'],this.modelBoard['20']]
+    ]
+
+    return [this.rows, this.columns, this.diagonals];
+  }
+
   // returns an object with div id as keys and innerText as values
   getPossibleMoves() {
     var possibleMoves = {};
@@ -118,15 +122,15 @@ class TicTacToeBoard {
     return possibleMoves;
   }
 
-  // accepts a div
-  // return a new instance of TicTacToeBoard with the new move made
+  // return a new instance of TicTacToeBoard with the new move made on modelBoard
   getNewState(squareID, squareText) {
     var newState = new TicTacToeBoard(this.activePlayer);
-    var newBoard = this.cloneBoard(this.modelBoard);
-    debugger;
+    var newBoard = this.cloneBoard();
+    // debugger;
+
     //make the move in the new square
     newBoard[squareID] = this.activePlayer.symbol;
-    newState.board = newBoard;
+    newState.modelBoard = newBoard;
     newState.simulatePassTurn();
 
     return newState;
@@ -137,7 +141,7 @@ class TicTacToeBoard {
     var copy = {};
 
     for (var prop in this.modelBoard) {
-      copy[prop] = board[prop];
+      copy[prop] = this.modelBoard[prop];
     }
 
     return copy;

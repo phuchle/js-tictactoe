@@ -18,17 +18,18 @@ class Player {
 
 class AI extends Player {
   move() {
-    var idealMove = this.minimax(game, this.depth);
+    var idealMoveDivID = this.minimax(game, this.depth);
+    var targetSquare = document.getElementById(idealMoveDivID);
     this.depth = 0;
-    idealMove.innerHTML = this.symbol;
+    targetSquare.innerHTML = this.symbol;
     this.passTurn();
   }
 
   // creates a set of possible moves, analyzes for the best move
-  // returns a move
+  // returns the div#id of the ideal move
   minimax(testGame, depth) {
     if (testGame.over()) {
-      debugger;
+      // debugger;
       return this.score(testGame, depth);
     } else {
       depth++;
@@ -37,9 +38,9 @@ class AI extends Player {
 
       // possibleMoves is an object with div ID: innerText as key: value
       var possibleMoves = testGame.getPossibleMoves();
-      debugger;
+      // debugger;
       Object.keys(possibleMoves).forEach(coord => {
-        debugger;
+        // debugger;
         // create a new possible game state for the move
         // run minimax on this new game state
         // eventually returns a score, push score to scores
@@ -47,21 +48,24 @@ class AI extends Player {
         var possibleGame = testGame.getNewState(coord, possibleMoves[coord]);
 
         scores.push(this.minimax(possibleGame, depth));
-        moves.push(move);
+        moves.push(coord);
       });
 
-      // if it's player's turn
+      //if it's the AI's turn
       // find index of max score
       // return move at same index as max score
-      //if it's the AI's turn
+
+      // if it's player's turn
       // find indeex of min score
       // return move at index of min score
       if (testGame.activePlayer === ai) {
         var maxIndex = scores.indexOf(Math.max(scores));
         return moves[maxIndex];
+        debugger;
       } else {
         var minIndex = scores.indexOf(Math.min(scores));
         return moves[minIndex];
+        debugger;
       }
     }
   }
