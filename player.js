@@ -1,6 +1,8 @@
 class Player {
   constructor() {
     this.depth = 0;
+    this.moves = [];
+    this.scores = [];
   }
   move(square) {
     square.innerHTML = this.symbol;
@@ -18,23 +20,30 @@ class Player {
 
 class AI extends Player {
   move() {
+    // debugger;
     var idealMoveDivID = this.minimax(game, this.depth);
     var targetSquare = document.getElementById(idealMoveDivID);
-    this.depth = 0;
+
     targetSquare.innerHTML = this.symbol;
+
+    // reset variables used by minimax
+    this.depth = 0;
+    this.scores = [];
+    this.moves = [];
+
     this.passTurn();
   }
 
   // creates a set of possible moves, analyzes for the best move
   // returns the div#id of the ideal move
   minimax(testGame, depth) {
+    // debugger;
+    var idealMoveID;
+
     if (testGame.over()) {
-      // debugger;
       return this.score(testGame, depth);
     } else {
       depth++;
-      var moves = [];
-      var scores = [];
 
       // possibleMoves is an object with div ID: innerText as key: value
       var possibleMoves = testGame.getPossibleMoves();
@@ -47,8 +56,8 @@ class AI extends Player {
         // push move to moves
         var possibleGame = testGame.getNewState(coord, possibleMoves[coord]);
 
-        scores.push(this.minimax(possibleGame, depth));
-        moves.push(coord);
+        this.scores.push(this.minimax(possibleGame, depth));
+        this.moves.push(coord);
       });
 
       //if it's the AI's turn
@@ -59,15 +68,17 @@ class AI extends Player {
       // find indeex of min score
       // return move at index of min score
       if (testGame.activePlayer === ai) {
-        var maxIndex = scores.indexOf(Math.max(scores));
-        return moves[maxIndex];
-        debugger;
+        var maxIndex = this.scores.indexOf(Math.max(this.scores));
+        // debugger;
+        idealMoveID = this.moves[maxIndex];
       } else {
-        var minIndex = scores.indexOf(Math.min(scores));
-        return moves[minIndex];
-        debugger;
+        var minIndex = this.scores.indexOf(Math.min(this.scores));
+        // debugger;
+        idealMoveID = this.moves[minIndex];
       }
     }
+    debugger;
+    return idealMoveID;
   }
 
   // receives an instance of Board class

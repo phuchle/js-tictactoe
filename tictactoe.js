@@ -65,7 +65,7 @@ class TicTacToeBoard {
     var winningMark;
     var winConditions = this.getWinConditions();
     if (this.over()) {
-      debugger;
+      // debugger;
       winConditions.forEach(condition => {
         condition.forEach(arr => {
           if (this.allSameElements(arr)) winningMark = arr[0];
@@ -95,9 +95,9 @@ class TicTacToeBoard {
 
     // 2D array of the board columns
     var columns = [
-      [this.rows[0][0], this.rows[1][0], this.rows[2][0]],
-      [this.rows[0][1], this.rows[1][1], this.rows[2][1]],
-      [this.rows[0][2], this.rows[1][2], this.rows[2][2]]
+      [rows[0][0], rows[1][0], rows[2][0]],
+      [rows[0][1], rows[1][1], rows[2][1]],
+      [rows[0][2], rows[1][2], rows[2][2]]
     ]
 
     // 2D array of the board diagonals
@@ -106,7 +106,7 @@ class TicTacToeBoard {
       [this.modelBoard['02'],this.modelBoard['11'],this.modelBoard['20']]
     ]
 
-    return [this.rows, this.columns, this.diagonals];
+    return [rows, columns, diagonals];
   }
 
   // returns an object with div id as keys and innerText as values
