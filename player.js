@@ -1,8 +1,8 @@
 class Player {
   constructor() {
-    this.depth = 0;
-    this.moves = [];
-    this.scores = [];
+    // this.depth = 0;
+    // this.moves = [];
+    // this.scores = [];
   }
   move(square) {
     square.innerHTML = this.symbol;
@@ -26,21 +26,22 @@ class AI extends Player {
 
     targetSquare.innerHTML = this.symbol;
 
-    // reset variables used by minimax
-    this.depth = 0;
-    this.scores = [];
-    this.moves = [];
+    // // reset variables used by minimax
+    // this.depth = 0;
+    // this.scores = [];
+    // this.moves = [];
 
     this.passTurn();
   }
 
   // creates a set of possible moves, analyzes for the best move
   // returns the div#id of the ideal move
-  minimax(testGame, depth) {
+  minimax(testGame, depth = 0) {
     // debugger;
     var idealMoveID;
 
     if (testGame.over()) {
+      debugger;
       return this.score(testGame, depth);
     } else {
       depth++;
@@ -68,29 +69,31 @@ class AI extends Player {
       // find indeex of min score
       // return move at index of min score
       if (testGame.activePlayer === ai) {
-        var maxIndex = this.scores.indexOf(Math.max(this.scores));
+        var maxIndex = this.scores.indexOf(Math.max(...this.scores));
         // debugger;
         idealMoveID = this.moves[maxIndex];
       } else {
-        var minIndex = this.scores.indexOf(Math.min(this.scores));
+        var minIndex = this.scores.indexOf(Math.min(...this.scores));
         // debugger;
         idealMoveID = this.moves[minIndex];
       }
     }
-    debugger;
     return idealMoveID;
   }
 
   // receives an instance of Board class
   score(testGame, depth) {
+    var score;
     if (testGame.isWinner(ai)) {
-      return 10 - depth;
+      score = 10 - depth;
     } else if (testGame.isWinner(player)) {
-      return depth - 10;
+      score = depth - 10;
     }
     else {
-      return 0;
+      score = 0;
     }
+    debugger;
+    return score;
   }
 
 }

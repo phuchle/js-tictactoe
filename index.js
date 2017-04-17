@@ -19,7 +19,6 @@ var chooseSymbol = () => {
       player.symbol = symbol.innerText;
       ai = new AI();
       player.symbol === 'X' ? ai.symbol = 'O' : ai.symbol = 'X';
-      game.addListeners();
       showBoard();
       showInstructions();
     });
@@ -39,5 +38,6 @@ var showInstructions = () => {
 document.addEventListener('DOMContentLoaded', () => {
   player = new Player();
   game = new TicTacToeBoard(player); // human player goes first
+  game.addListeners();
   chooseSymbol();
 });
