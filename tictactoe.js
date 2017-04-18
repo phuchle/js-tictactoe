@@ -22,6 +22,8 @@ class TicTacToeBoard {
         player.move(square);
         bindCopy(square);
         ai.move();
+        bindCopy(ai.showIdealMove());
+        ai.passTurn();
       });
     });
   }
@@ -92,7 +94,10 @@ class TicTacToeBoard {
       [this.modelBoard['11'], this.modelBoard['11'], this.modelBoard['12']],
       [this.modelBoard['20'], this.modelBoard['21'], this.modelBoard['22']]
     ]
-
+    // // reset variables used by minimax
+    // this.depth = 0;
+    // this.scores = [];
+    // this.moves = [];
     // 2D array of the board columns
     var columns = [
       [rows[0][0], rows[1][0], rows[2][0]],
@@ -109,13 +114,13 @@ class TicTacToeBoard {
     return [rows, columns, diagonals];
   }
 
-  // returns an object with div id as keys and innerText as values
+  // returns an array with div id as values
   getPossibleMoves() {
-    var possibleMoves = {};
+    var possibleMoves = [];
 
     Object.keys(this.modelBoard).forEach(square => {
       if (this.modelBoard[square] === '') {
-        possibleMoves[square] = this.modelBoard[square];
+        possibleMoves.push(square);
       }
     });
 
@@ -123,7 +128,7 @@ class TicTacToeBoard {
   }
 
   // return a new instance of TicTacToeBoard with the new move made on modelBoard
-  getNewState(squareID, squareText) {
+  getNewState(squareID) {
     var newState = new TicTacToeBoard(this.activePlayer);
     var newBoard = this.cloneBoard();
     // debugger;

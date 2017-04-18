@@ -1,8 +1,6 @@
 class Player {
   constructor() {
-    // this.depth = 0;
-    // this.moves = [];
-    // this.scores = [];
+    this.idealMove;
   }
   move(square) {
     square.innerHTML = this.symbol;
@@ -20,45 +18,39 @@ class Player {
 
 class AI extends Player {
   move() {
-    // debugger;
-    var idealMoveDivID = this.minimax(game, this.depth);
-    var targetSquare = document.getElementById(idealMoveDivID);
+    this.minimax(game, this.depth);
+    debugger;
+    var targetSquare = document.getElementById(this.idealMove);
 
     targetSquare.innerHTML = this.symbol;
-
-    // // reset variables used by minimax
-    // this.depth = 0;
-    // this.scores = [];
-    // this.moves = [];
-
-    this.passTurn();
   }
 
   // creates a set of possible moves, analyzes for the best move
   // returns the div#id of the ideal move
   minimax(testGame, depth = 0) {
     // debugger;
-    var idealMoveID;
+    var scores = [];
+    var moves = [];
 
     if (testGame.over()) {
-      debugger;
+      // debugger;
       return this.score(testGame, depth);
     } else {
       depth++;
 
-      // possibleMoves is an object with div ID: innerText as key: value
+      // possibleMoves is an array with div ID as value
       var possibleMoves = testGame.getPossibleMoves();
       // debugger;
-      Object.keys(possibleMoves).forEach(coord => {
+      possibleMoves.forEach(coord => {
         // debugger;
         // create a new possible game state for the move
         // run minimax on this new game state
         // eventually returns a score, push score to scores
         // push move to moves
-        var possibleGame = testGame.getNewState(coord, possibleMoves[coord]);
+        var possibleGame = testGame.getNewState(coord);
 
-        this.scores.push(this.minimax(possibleGame, depth));
-        this.moves.push(coord);
+        scores.push(this.minimax(possibleGame, depth));
+        moves.push(coord);
       });
 
       //if it's the AI's turn
@@ -69,16 +61,17 @@ class AI extends Player {
       // find indeex of min score
       // return move at index of min score
       if (testGame.activePlayer === ai) {
-        var maxIndex = this.scores.indexOf(Math.max(...this.scores));
-        // debugger;
-        idealMoveID = this.moves[maxIndex];
+        var maxIndex = scores.indexOf(Math.max(...scores));
+        debugger;
+        this.idealMove = moves[maxIndex];
+        return scores[maxIndex];
       } else {
-        var minIndex = this.scores.indexOf(Math.min(...this.scores));
-        // debugger;
-        idealMoveID = this.moves[minIndex];
+        var minIndex = scores.indexOf(Math.min(...scores));
+        debugger;
+        this.idealMove = moves[minIndex];
+        return scores[minIndex];
       }
     }
-    return idealMoveID;
   }
 
   // receives an instance of Board class
@@ -92,8 +85,12 @@ class AI extends Player {
     else {
       score = 0;
     }
-    debugger;
+    // debugger;
     return score;
   }
 
+  // returns the div where the AI just moved
+  showIdealMove() {
+    return document.getElementById(this.idealMove);
+  }
 }
