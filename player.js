@@ -19,7 +19,6 @@ class Player {
 class AI extends Player {
   move() {
     this.minimax(game, this.depth);
-    debugger;
     var targetSquare = document.getElementById(this.idealMove);
 
     targetSquare.innerHTML = this.symbol;
@@ -28,21 +27,19 @@ class AI extends Player {
   // creates a set of possible moves, analyzes for the best move
   // returns the div#id of the ideal move
   minimax(testGame, depth = 0) {
-    // debugger;
-    var scores = [];
-    var moves = [];
 
     if (testGame.over()) {
-      // debugger;
       return this.score(testGame, depth);
     } else {
       depth++;
+      var scores = [];
+      var moves = [];
 
       // possibleMoves is an array with div ID as value
       var possibleMoves = testGame.getPossibleMoves();
-      // debugger;
+
       possibleMoves.forEach(coord => {
-        // debugger;
+
         // create a new possible game state for the move
         // run minimax on this new game state
         // eventually returns a score, push score to scores
@@ -62,13 +59,14 @@ class AI extends Player {
       // return move at index of min score
       if (testGame.activePlayer === ai) {
         var maxIndex = scores.indexOf(Math.max(...scores));
-        debugger;
         this.idealMove = moves[maxIndex];
+
         return scores[maxIndex];
       } else {
         var minIndex = scores.indexOf(Math.min(...scores));
-        debugger;
+
         this.idealMove = moves[minIndex];
+
         return scores[minIndex];
       }
     }
@@ -85,7 +83,7 @@ class AI extends Player {
     else {
       score = 0;
     }
-    // debugger;
+
     return score;
   }
 
