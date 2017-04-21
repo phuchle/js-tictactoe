@@ -8,20 +8,29 @@ var ai;
 
 // assigns x and o based on what human chooses to be
 var chooseSymbol = () => {
-  var symbolContainer = document.getElementById('symbol-container');
   var x = document.getElementById('X');
   var o = document.getElementById('O');
   var symbols = [x,o];
 
   symbols.forEach(symbol => {
     symbol.addEventListener('click', () => {
-      symbolContainer.style.opacity = 0;
+      hideSymbolContainer();
       player.symbol = symbol.innerText;
       player.symbol === 'X' ? ai.symbol = 'O' : ai.symbol = 'X';
       showBoard();
       showInstructions();
     });
   });
+}
+
+var showSymbolContainer = () => {
+  var symbolContainer = document.getElementById('symbol-container');
+  symbolContainer.style.opacity = 1;
+}
+
+var hideSymbolContainer = () => {
+  var symbolContainer = document.getElementById('symbol-container');
+  symbolContainer.style.opacity = 0;
 }
 
 var showBoard = () => {
@@ -32,6 +41,11 @@ var showBoard = () => {
 var hideBoard = () => {
   var board = document.getElementById('board');
   board.style.opacity = 0;
+}
+
+var clearBoard = () => {
+  var board = document.getElementById('board');
+  board.innerHTML = '';
 }
 
 var showInstructions = () => {
@@ -46,8 +60,8 @@ var hideInstructions = () => {
 
 var showWinner = () => {
   var winner = document.createElement('h2');
-  var instructions = document.getElementById('instructions');
-  var parentDiv = document.getElementById('parent-container');
+  winner.id = 'winner';
+  var instructionsContainer = document.getElementById('instructions-container');
 
   if (game.activePlayer === player) {
     winner.innerText = 'You win.';
@@ -55,10 +69,43 @@ var showWinner = () => {
     winner.innerText = "I'm unbeatable.";
   }
 
-  parentDiv.insertBefore(winner, instructions);
+  instructionsContainer.appendChild(winner, instructions);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+var hideWinner = () => {
+  var winner = document.getElementById('winner');
+  winner.outerHTML = '';
+  delete winner;
+}
+
+var restartGame = () => {
+  hideRestartOption();
+  hideWinner();
+  clearBoard();
+  showSymbolContainer();
+  beginGame();
+}
+
+var showRestartOption = () => {
+  var instructionsContainer = document.getElementById('instructions-container');
+  var restartOption = document.createElement('h2');
+  restartOption.innerText = 'Again?';
+  restartOption.id = 'restart-option';
+  restartOption.addEventListener('click', () => {
+    debugger;
+    restartGame();
+  });
+
+  instructionsContainer.appendChild(restartOption);
+}
+
+var hideRestartOption = () => {
+  var restartOption = document.getElementById('restart-option');
+  restartOption.outerHTML = '';
+  delete restartOption;
+}
+
+var beginGame = () => {
   player = new Player();
   game = new TicTacToeBoard(player); // human player goes first
   ai = new AI();
@@ -66,4 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
   game.populateVisibleBoard();
   game.addListeners();
   chooseSymbol();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  beginGame();
 });

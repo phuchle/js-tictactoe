@@ -18,7 +18,7 @@ class TicTacToeBoard {
         square.id = (i.toString()) +  (j.toString());
         row.appendChild(square);
       }
-      debugger;
+
       board.appendChild(row);
     }
   }
@@ -62,6 +62,7 @@ class TicTacToeBoard {
       hideBoard();
       hideInstructions();
       showWinner();
+      showRestartOption();
     }
   }
 
@@ -107,6 +108,7 @@ class TicTacToeBoard {
   isWinner(currentPlayer) {
     var winningMark;
     var winConditions = this.getWinConditions();
+
     if (this.over()) {
       winConditions.forEach(condition => {
         condition.forEach(arr => {
@@ -114,6 +116,7 @@ class TicTacToeBoard {
         });
       });
     }
+
     return winningMark === currentPlayer.symbol;
   }
 
