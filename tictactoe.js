@@ -1,5 +1,7 @@
 class TicTacToeBoard {
   constructor(activePlayer = player) {
+    debugger;
+    this.makeBoard();
     this.modelBoard = {}; // coords as keys, strings as values
     this.visibleBoard = []; // array of divs
     this.activePlayer = activePlayer;
@@ -11,6 +13,24 @@ class TicTacToeBoard {
         this.visibleBoard.push(item);
       }
     );
+  }
+
+  makeBoard() {
+    var board = document.getElementById('board');
+
+    for (var i = 0; i < 3; i++) {
+      var row = document.createElement('div');
+      row.className = 'rows';
+
+      for (var j = 0; j < 3; j++) {
+        var square = document.createElement('div');
+        square.className = 'squares';
+        square.id = i.toString() + j.toString();
+        row.appendChild(square);
+      }
+
+      board.appendChild(row);
+    }
   }
 
   addListeners() {
