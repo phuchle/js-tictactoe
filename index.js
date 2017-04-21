@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
   player = new Player();
   game = new TicTacToeBoard(player); // human player goes first
   ai = new AI();
+  game.makeBoard();
+  game.populateVisibleBoard();
   game.addListeners();
   chooseSymbol();
 });
