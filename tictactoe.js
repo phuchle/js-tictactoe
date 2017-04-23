@@ -39,13 +39,17 @@ class TicTacToeBoard {
 
     this.visibleBoard.forEach(square => {
       square.addEventListener('click', () => {
-        player.move(square);
-        bindCopy(square);
-        // game.checkForWinner();
-        ai.move();
-        bindCopy(ai.showIdealMove());
-        game.checkForWinner();
-        ai.passTurn();
+        if (game.modelBoard[square.id]) {
+          alert('You have already moved here');
+        } else {
+          player.move(square);
+          bindCopy(square);
+
+          ai.move();
+          bindCopy(ai.showIdealMove());
+          game.checkForWinner();
+          ai.passTurn();
+        }
       });
     });
   }

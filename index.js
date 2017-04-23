@@ -92,7 +92,6 @@ var showRestartOption = () => {
   restartOption.innerText = 'Again?';
   restartOption.id = 'restart-option';
   restartOption.addEventListener('click', () => {
-    debugger;
     restartGame();
   });
 

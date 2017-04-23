@@ -26,16 +26,14 @@ html, body {
   -moz-transition: opacity .5s ease-out, .1s ease-in;
   -ms-transition: opacity .5s ease-out, .1s ease-in;
   -o-transition: opacity .5s ease-out, .1s ease-in;
-
   opacity: 1;
 }
 
 #board, #instructions {
-  -webkit-transition: opacity .5s ease-out, .1s ease-in;
-  -moz-transition: opacity .5s ease-out, .1s ease-in;
-  -ms-transition: opacity .5s ease-out, .1s ease-in;
-  -o-transition: opacity .5s ease-out, .1s ease-in;
-
+  -webkit-transition: opacity .5s ease-out, 2s ease-in;
+  -moz-transition: opacity .5s ease-out, 2s ease-in;
+  -ms-transition: opacity .5s ease-out, 2s ease-in;
+  -o-transition: opacity .5s ease-out, 2s ease-in;
   opacity: 0;
 }
 
