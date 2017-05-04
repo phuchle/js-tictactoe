@@ -6,14 +6,14 @@ class TicTacToeBoard {
   }
 
   makeBoard() {
-    var board = document.getElementById('board');
+    let board = document.getElementById('board');
 
-    for (var i = 0; i < 3; i++) {
-      var row = document.createElement('div');
+    for (let i = 0; i < 3; i++) {
+      let row = document.createElement('div');
       row.className = 'rows';
 
-      for (var j = 0; j < 3; j++) {
-        var square = document.createElement('div');
+      for (let j = 0; j < 3; j++) {
+        let square = document.createElement('div');
         square.className = 'squares';
         square.id = (i.toString()) +  (j.toString());
         row.appendChild(square);
@@ -35,7 +35,7 @@ class TicTacToeBoard {
 
   addListeners() {
     // create a new function bound to TicTacToeBoard as 'this'
-    var bindCopy = this.copyToModelBoard.bind(this);
+    let bindCopy = this.copyToModelBoard.bind(this);
 
     this.visibleBoard.forEach(square => {
       square.addEventListener('click', () => {
@@ -56,7 +56,7 @@ class TicTacToeBoard {
 
   // helper for addListeners
   copyToModelBoard(square) {
-    var targetID = square.id;
+    let targetID = square.id;
 
     this.modelBoard[targetID] = square.innerText;
   }
@@ -72,16 +72,16 @@ class TicTacToeBoard {
 
   // checks if game has ended (win, lose, or tie)
   over() {
-    var gameOver = false;
+    let gameOver = false;
 
     // winConditions is a 3D array
-    var winConditions = this.getWinConditions();
+    let winConditions = this.getWinConditions();
 
     winConditions.forEach(condition => {
       if (this.winConditionPresent(condition)) gameOver = true;
     });
 
-    var boardFull = Object.values(this.modelBoard).every(square => {
+    let boardFull = Object.values(this.modelBoard).every(square => {
       return square !== '';
     });
 
@@ -92,7 +92,7 @@ class TicTacToeBoard {
 
   // helper that checks an array of  returns true if there is a win condition
   winConditionPresent(condition) {
-    var isWin = false;
+    let isWin = false;
     condition.forEach(arr => {
       if (this.allSameElements(arr)) isWin = true;
     });
@@ -100,7 +100,7 @@ class TicTacToeBoard {
   }
 
   allSameElements(array) {
-    var firstElement = array[0];
+    let firstElement = array[0];
     if (firstElement === '') return false;
 
     return array.every(element => {
@@ -110,8 +110,8 @@ class TicTacToeBoard {
 
   // checks if the passed player is the winner
   isWinner(currentPlayer) {
-    var winningMark;
-    var winConditions = this.getWinConditions();
+    let winningMark;
+    let winConditions = this.getWinConditions();
 
     if (this.over()) {
       winConditions.forEach(condition => {
@@ -127,21 +127,21 @@ class TicTacToeBoard {
   // returns a 3D array -- I'm a madman
   getWinConditions() {
     // 2D array of board rows
-    var rows = [
+    let rows = [
       [this.modelBoard['00'], this.modelBoard['01'], this.modelBoard['02']],
       [this.modelBoard['10'], this.modelBoard['11'], this.modelBoard['12']],
       [this.modelBoard['20'], this.modelBoard['21'], this.modelBoard['22']]
     ]
 
     // 2D array of the board columns
-    var columns = [
+    let columns = [
       [rows[0][0], rows[1][0], rows[2][0]],
       [rows[0][1], rows[1][1], rows[2][1]],
       [rows[0][2], rows[1][2], rows[2][2]]
     ]
 
     // 2D array of the board diagonals
-    var diagonals = [
+    let diagonals = [
       [this.modelBoard['00'],this.modelBoard['11'],this.modelBoard['22']],
       [this.modelBoard['02'],this.modelBoard['11'],this.modelBoard['20']]
     ]
@@ -152,7 +152,7 @@ class TicTacToeBoard {
   // returns an array of strings
   // the strings are the ID values of divs on the board
   getPossibleMoves() {
-    var possibleMoves = [];
+    let possibleMoves = [];
 
     Object.keys(this.modelBoard).forEach(square => {
       if (this.modelBoard[square] === '') {
@@ -165,8 +165,8 @@ class TicTacToeBoard {
 
   // return a new instance of TicTacToeBoard with the new move made on modelBoard
   getNewState(squareID) {
-    var newState = new TicTacToeBoard(this.activePlayer);
-    var newBoard = this.cloneBoard();
+    let newState = new TicTacToeBoard(this.activePlayer);
+    let newBoard = this.cloneBoard();
 
     //make the move in the new square
     newBoard[squareID] = this.activePlayer.symbol;
@@ -178,9 +178,9 @@ class TicTacToeBoard {
 
   // returns an object
   cloneBoard() {
-    var copy = {};
+    let copy = {};
 
-    for (var prop in this.modelBoard) {
+    for (let prop in this.modelBoard) {
       copy[prop] = this.modelBoard[prop];
     }
 

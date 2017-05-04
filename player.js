@@ -19,32 +19,29 @@ class Player {
 class AI extends Player {
   move() {
     this.minimax(game, this.depth);
-    var targetSquare = document.getElementById(this.idealMove);
-
+    let targetSquare = document.getElementById(this.idealMove);
     targetSquare.innerHTML = this.symbol;
   }
 
   // creates a set of possible moves, analyzes for the best move
   // returns the div#id of the ideal move
   minimax(testGame, depth = 0) {
-
     if (testGame.over()) {
       return this.score(testGame, depth);
     } else {
       depth++;
-      var scores = [];
-      var moves = [];
+      let scores = [];
+      let moves = [];
 
       // possibleMoves is an array with div ID as value
-      var possibleMoves = testGame.getPossibleMoves();
+      let possibleMoves = testGame.getPossibleMoves();
 
       possibleMoves.forEach(coord => {
-
         // create a new possible game state for the move
         // run minimax on this new game state
         // eventually returns a score, push score to scores
         // push move to moves
-        var possibleGame = testGame.getNewState(coord);
+        let possibleGame = testGame.getNewState(coord);
 
         scores.push(this.minimax(possibleGame, depth));
         moves.push(coord);
@@ -58,15 +55,14 @@ class AI extends Player {
       // find indeex of min score
       // return move at index of min score
       if (testGame.activePlayer === ai) {
-        var maxIndex = scores.indexOf(Math.max(...scores));
+        let maxIndex = scores.indexOf(Math.max(...scores));
         this.idealMove = moves[maxIndex];
 
         return scores[maxIndex];
       } else {
-        var minIndex = scores.indexOf(Math.min(...scores));
+        let minIndex = scores.indexOf(Math.min(...scores));
 
         this.idealMove = moves[minIndex];
-
         return scores[minIndex];
       }
     }
@@ -74,7 +70,8 @@ class AI extends Player {
 
   // receives an instance of Board class
   score(testGame, depth) {
-    var score;
+    let score;
+
     if (testGame.isWinner(ai)) {
       score = 10 - depth;
     } else if (testGame.isWinner(player)) {

@@ -2,15 +2,15 @@
 // game ends when there are three of same mark in a row or all squares filled
 // check board after every move is made
 
-var game;
-var player;
-var ai;
+let game;
+let player;
+let ai;
 
 // assigns x and o based on what human chooses to be
-var chooseSymbol = () => {
-  var x = document.getElementById('X');
-  var o = document.getElementById('O');
-  var symbols = [x,o];
+function chooseSymbol() {
+  let x = document.getElementById('X');
+  let o = document.getElementById('O');
+  let symbols = [x,o];
 
   symbols.forEach(symbol => {
     symbol.addEventListener('click', () => {
@@ -23,45 +23,45 @@ var chooseSymbol = () => {
   });
 }
 
-var showSymbolContainer = () => {
-  var symbolContainer = document.getElementById('symbol-container');
+function showSymbolContainer() {
+  let symbolContainer = document.getElementById('symbol-container');
   symbolContainer.style.opacity = 1;
 }
 
-var hideSymbolContainer = () => {
-  var symbolContainer = document.getElementById('symbol-container');
+function hideSymbolContainer() {
+  let symbolContainer = document.getElementById('symbol-container');
   symbolContainer.style.opacity = 0;
 }
 
-var showBoard = () => {
-  var board = document.getElementById('board');
+function showBoard() {
+  let board = document.getElementById('board');
   board.style.opacity = 1;
 }
 
-var hideBoard = () => {
-  var board = document.getElementById('board');
+function hideBoard() {
+  let board = document.getElementById('board');
   board.style.opacity = 0;
 }
 
-var clearBoard = () => {
-  var board = document.getElementById('board');
+function clearBoard() {
+  let board = document.getElementById('board');
   board.innerHTML = '';
 }
 
-var showInstructions = () => {
-  var instructions = document.getElementById('instructions');
+function showInstructions() {
+  let instructions = document.getElementById('instructions');
   instructions.style.opacity = 1;
 }
 
-var hideInstructions = () => {
-  var instructions = document.getElementById('instructions');
+function hideInstructions() {
+  let instructions = document.getElementById('instructions');
   instructions.style.opacity = 0;
 }
 
-var showWinner = () => {
-  var winner = document.createElement('h2');
+function showWinner() {
+  let winner = document.createElement('h2');
   winner.id = 'winner';
-  var instructionsContainer = document.getElementById('instructions-container');
+  let instructionsContainer = document.getElementById('instructions-container');
 
   if (game.activePlayer === player) {
     winner.innerText = 'You win.';
@@ -72,13 +72,13 @@ var showWinner = () => {
   instructionsContainer.appendChild(winner, instructions);
 }
 
-var hideWinner = () => {
-  var winner = document.getElementById('winner');
+function hideWinner() {
+  let winner = document.getElementById('winner');
   winner.outerHTML = '';
   delete winner;
 }
 
-var restartGame = () => {
+function restartGame() {
   hideRestartOption();
   hideWinner();
   clearBoard();
@@ -86,9 +86,9 @@ var restartGame = () => {
   beginGame();
 }
 
-var showRestartOption = () => {
-  var instructionsContainer = document.getElementById('instructions-container');
-  var restartOption = document.createElement('h2');
+function showRestartOption() {
+  let instructionsContainer = document.getElementById('instructions-container');
+  let restartOption = document.createElement('h2');
   restartOption.innerText = 'Again?';
   restartOption.id = 'restart-option';
   restartOption.addEventListener('click', () => {
@@ -98,13 +98,13 @@ var showRestartOption = () => {
   instructionsContainer.appendChild(restartOption);
 }
 
-var hideRestartOption = () => {
-  var restartOption = document.getElementById('restart-option');
+function hideRestartOption() {
+  let restartOption = document.getElementById('restart-option');
   restartOption.outerHTML = '';
   delete restartOption;
 }
 
-var beginGame = () => {
+function beginGame() {
   player = new Player();
   game = new TicTacToeBoard(player); // human player goes first
   ai = new AI();
@@ -114,6 +114,4 @@ var beginGame = () => {
   chooseSymbol();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  beginGame();
-});
+document.addEventListener('DOMContentLoaded', beginGame);
